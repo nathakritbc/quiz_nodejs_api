@@ -2,9 +2,9 @@
 
 ## ส่วนที่ 1
 
-### สร้าง Project ที่ใช้ laravel
+### สร้าง Project ที่ใช้ Nodejs Express
 
 - api สามารถ Login ได้
 - api สามารถ สมัครสมาชิกได้
 - api สามารถ อับรูปภาพได้
-- ใช้ laravel access token api
+- ใช้ Nodejs Express access token api
