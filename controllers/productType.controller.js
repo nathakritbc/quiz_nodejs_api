@@ -1,0 +1,115 @@
+const db = require("../models");
+const ProductType = db.product_types;
+
+const constants = require("../constants");
+
+// // Create and Save a new ProductType
+exports.create = async (req, res) => {
+  try {
+    const payload = {
+      ...req.body,
+    };
+
+    const result = await ProductType.create(payload);
+
+    res.status(201).send({ message: constants.kResultOk, result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: constants.kResultNok });
+  }
+};
+
+// Retrieve all ProductTypes from the database.
+exports.findAll = async (req, res) => {
+  try {
+    const { query } = req;
+    const result = await ProductType.findAll({
+      order: [["createdAt", "DESC"]],
+      where: query,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+
+// Find a single ProductType with an id
+exports.findOne = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await ProductType.findByPk(id);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(200).json({});
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+
+// Update a ProductType by the id in the request
+exports.update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await ProductType.findByPk(id);
+
+    if (!result) {
+      res.status(500).json({
+        message: constants.kResultNok,
+      });
+      return;
+    }
+
+    const payload = {
+      ...result,
+      ...req.body,
+    };
+
+    await ProductType.update(payload, {
+      where: { id: id },
+    });
+
+    const newResult = await ProductType.findByPk(id);
+
+    res.status(200).json({
+      message: constants.kResultOk,
+      result: newResult.dataValues,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: constants.kResultNok });
+  }
+};
+
+// Delete a ProductType with the specified id in the request
+exports.delete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await ProductType.findByPk(id);
+
+    if (!result) {
+      console.error("Internal error");
+      res.status(500).json({ message: constants.kResultNok });
+      return;
+    }
+
+    const isCheck = await ProductType.destroy({ where: { id: id } });
+
+    res.status(200).json({
+      message: constants.kResultOk,
+      result: isCheck,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: constants.kResultNok,
+    });
+  }
+};
