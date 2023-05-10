@@ -1,7 +1,7 @@
 const db = require("../models");
 const Product = db.products;
 const Shop = db.shops;
-
+const { Op } = require("sequelize");
 const constants = require("../constants");
 const Joi = require("joi");
 
@@ -141,6 +141,51 @@ exports.findAllFormatCustom = async (req, res) => {
       oldFormatResult: result,
       newFormatResult,
     });
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+
+exports.findByAttributesAndSubQuery = async (req, res) => {
+  try {
+    let { query } = req;
+
+    let queryParams = {
+      ...query,
+    };
+
+    if (queryParams._page) {
+      delete queryParams._page;
+    }
+
+    if (queryParams._limit) {
+      delete queryParams._limit;
+    }
+
+    const attributes = ["id", "p_name", "p_price", "p_status"];
+    const where = {
+      [Op.and]: [
+        {
+          p_price: {
+            [Op.gt]: 50,
+          },
+        },
+        { p_status: true },
+      ],
+    };
+
+    const result = await Product.findAll({
+      order: [["createdAt", "DESC"]],
+      where,
+      attributes,
+      // include: [{ model: Shop }],
+      offset: query._page,
+      limit: query._limit,
+    });
+    res.status(200).json(result);
   } catch (error) {
     console.error(error);
     res.status(404).json({

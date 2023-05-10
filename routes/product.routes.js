@@ -1,25 +1,30 @@
 const express = require("express");
 const router = express.Router();
 
-const products = require("../controllers/product.controller");
+const controller = require("../controllers/product.controller");
 
-router.post("/", products.create);
+router.post("/", controller.create);
 
-router.get("/findAllFormatCustoms", products.findAllFormatCustom);
+router.get("/findAllFormatCustoms", controller.findAllFormatCustom);
 
-router.get("/", products.findAll);
+router.get(
+  "/findByAttributesAndSubQueries",
+  controller.findByAttributesAndSubQuery
+);
 
-router.get("/:id", products.findOne);
+router.get("/", controller.findAll);
 
-router.get("/findByShopName/:shop_name", products.findByShopName);
+router.get("/:id", controller.findOne);
+
+router.get("/findByShopName/:shop_name", controller.findByShopName);
 
 router.put(
   "/updateProductByShopNameAndStatus/:shop_name",
-  products.updateProductByShopNameAndStatus
+  controller.updateProductByShopNameAndStatus
 );
 
-router.put("/:id", products.update);
+router.put("/:id", controller.update);
 
-router.delete("/:id", products.delete);
+router.delete("/:id", controller.delete);
 
 module.exports = router;
