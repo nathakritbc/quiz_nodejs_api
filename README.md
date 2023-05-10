@@ -30,6 +30,22 @@
   <img src='/images-doc/register-auth.png'  />
 
 - api สามารถ Login ได้
+  <br/>
+
+  #### api apth : http://localhost:8090/api/auth/register
+
+  #### Json Body
+
+  ```JSON
+  {
+    "u_email": "user@gmail.com",
+    "u_password": "user@123"
+  }
+
+  ```
+
+    <img src='/images-doc/login-auth.png'  />
+
 - api สามารถ อับรูปภาพได้
 - ใช้ Nodejs Express access token api
 
