@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
     },
 
-    ip_description: {
+    description: {
       type: Sequelize.TEXT(),
     },
     status: {

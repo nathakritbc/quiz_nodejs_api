@@ -2,12 +2,15 @@ const db = require("../models");
 const User = db.users;
 const LoginLoging = db.login_loging;
 
+const Joi = require("joi");
+
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 let ExtractJwt = passportJWT.ExtractJwt;
 const constants = require("../constants");
+const { JSON } = require("sequelize");
 
 require("dotenv").config();
 const secretOrKey = process.env.SECRETORKEY;
@@ -31,6 +34,23 @@ const createToken = (payload, secretOrKey, expiresIn) => {
 
 exports.login = async (req, res) => {
   try {
+    const schema = Joi.object({
+      u_email: Joi.string().email().required().min(5).max(100),
+      u_password: Joi.string().required(),
+      // .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const { u_email, u_password } = req.body;
     let user = await getUser({ u_email });
     const match = await bcrypt.compareSync(u_password, user.u_password);
@@ -74,7 +94,7 @@ exports.login = async (req, res) => {
       }
 
       await LoginLoging.create({
-        ip_description: "LOGIN_FAIL",
+        description: "LOGIN_FAIL",
         time: formattedDate,
         date: formattedDate,
         userId,
@@ -89,7 +109,7 @@ exports.login = async (req, res) => {
     }
 
     await LoginLoging.create({
-      ip_description: "LOGIN_SUCCESS",
+      description: "LOGIN_SUCCESS",
       time: formattedDate,
       date: formattedDate,
       userId,
@@ -110,6 +130,26 @@ exports.login = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
+    const schema = Joi.object({
+      u_email: Joi.string().email().required().min(5).max(100),
+      u_password: Joi.string().required(),
+      u_full_name: Joi.string().required(),
+      u_tel: Joi.string().required().min(10).max(20),
+      u_address: Joi.string(),
+      u_role: Joi.string(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const { u_password } = req.body;
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(u_password, salt);

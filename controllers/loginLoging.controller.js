@@ -1,21 +1,34 @@
 const db = require("../models");
 const LoginLoging = db.login_loging;
-
+const Joi = require("joi");
 const constants = require("../constants");
 
 // // Create and Save a new LoginLoging
 exports.create = async (req, res) => {
   try {
-    const { p_name, p_price, p_amount, p_image } = req.body;
+    const schema = Joi.object({
+      description: Joi.string(),
+      status: Joi.boolean(),
+      time: Joi.required(),
+      date: Joi.required(),
+    });
 
-    const res = {
-      p_name,
-      p_price,
-      p_amount,
-      p_image,
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
+    const payload = {
+      ...req.body,
     };
 
-    const result = await LoginLoging.create(res);
+    const result = await LoginLoging.create(payload);
 
     res.status(201).send({ message: constants.kResultOk, result });
   } catch (error) {
@@ -72,6 +85,22 @@ exports.update = async (req, res) => {
       return;
     }
 
+    const schema = Joi.object({
+      description: Joi.string(),
+      status: Joi.boolean(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const payload = {
       ...result,
       ...req.body,
@@ -81,9 +110,11 @@ exports.update = async (req, res) => {
       where: { id: id },
     });
 
+    const newResult = await LoginLoging.findByPk(id);
+
     res.status(200).json({
       message: constants.kResultOk,
-      result: payload.dataValues,
+      result: newResult.dataValues,
     });
   } catch (error) {
     console.error(error);

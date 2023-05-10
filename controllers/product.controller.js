@@ -3,6 +3,7 @@ const Product = db.products;
 const Shop = db.shops;
 
 const constants = require("../constants");
+const Joi = require("joi");
 
 const fs = require("fs");
 
@@ -18,6 +19,25 @@ const removeImage = async (path) => {
 // // Create and Save a new Product
 exports.create = async (req, res) => {
   try {
+    const schema = Joi.object({
+      p_name: Joi.string().required().min(2),
+      p_price: Joi.number().required(),
+      p_amount: Joi.number().required(),
+      p_image: Joi.string().required(),
+      p_status: Joi.string(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const product = {
       ...req.body,
     };
@@ -76,6 +96,25 @@ exports.update = async (req, res) => {
     if (!result) {
       res.status(500).json({
         message: constants.kResultNok,
+      });
+      return;
+    }
+
+    const schema = Joi.object({
+      p_name: Joi.string().min(2),
+      p_price: Joi.number(),
+      p_amount: Joi.number(),
+      p_image: Joi.string(),
+      p_status: Joi.string(),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
       });
       return;
     }

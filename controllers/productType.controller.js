@@ -1,11 +1,26 @@
 const db = require("../models");
 const ProductType = db.product_types;
-
+const Joi = require("joi");
 const constants = require("../constants");
 
 // // Create and Save a new ProductType
 exports.create = async (req, res) => {
   try {
+    const schema = Joi.object({
+      pty_name: Joi.string().required().min(2),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const payload = {
       ...req.body,
     };
@@ -63,6 +78,21 @@ exports.update = async (req, res) => {
     if (!result) {
       res.status(500).json({
         message: constants.kResultNok,
+      });
+      return;
+    }
+
+    const schema = Joi.object({
+      pty_name: Joi.string().min(2),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
       });
       return;
     }

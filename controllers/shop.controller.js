@@ -1,12 +1,28 @@
 const db = require("../models");
 const Shop = db.shops;
 const Product = db.products;
+const Joi = require("joi");
 
 const constants = require("../constants");
 
 // // Create and Save a new Shop
 exports.create = async (req, res) => {
   try {
+    const schema = Joi.object({
+      name: Joi.string().required().min(2),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
+      });
+      return;
+    }
+
     const payload = {
       ...req.body,
     };
@@ -65,6 +81,21 @@ exports.update = async (req, res) => {
     if (!result) {
       res.status(500).json({
         message: constants.kResultNok,
+      });
+      return;
+    }
+
+    const schema = Joi.object({
+      name: Joi.string().min(2),
+    });
+
+    const { error, value } = schema.validate(req.body);
+
+    if (error) {
+      console.log(error.details[0].message);
+      res.status(400).send({
+        message: constants.kResultNok,
+        result: error.details[0].message,
       });
       return;
     }
