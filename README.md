@@ -104,16 +104,42 @@ force attack หรือเดารหัสผ่านใน login form
 
   <hr/>
 
-2. จงเขียนตัวอย่าง sql query ในโค้ด php โดยให้มีชุดคำสั่ง
+2. จงเขียนตัวอย่าง sql query ชุดคำสั่ง
 ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
 ได้เลย)
+<hr/>
+
+\*\* ในโปรเจ็กนี้ใช้ sequelize ORM ในการจัดการกับฐานข้อมูลซึ่งสามารถป้องกัน sql injection ได้อย่างมีประสิทธิ์ภาพ ยกตัวอย่าง
+
+```javascript
+const attributes = ["id", "p_name", "p_price", "p_status"];
+const where = {
+  [Op.and]: [
+    {
+      p_price: {
+        [Op.gt]: 50,
+      },
+    },
+    { p_status: true },
+  ],
+};
+
+const result = await Product.findAll({
+  order: [["createdAt", "DESC"]],
+  where,
+  attributes,
+  offset: query._page,
+  limit: query._limit,
+});
+```
+
 <hr/>
 
 3. จงเขียน saI query ที่มี sub query ในตำแหน่งต่างๆ อย่าง
 น้อยสองแบบ (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเองได้เลย)
 <hr/>
 
-\*\* code query เลือก field เเล้วสร้าง sub query select สินค้า ราคา มากกว่า 50 เเละสินค้าที่ p_status เป็น true
+\*\* code query เลือก field ที่ต้องการ select เเล้วสร้าง sub query select สินค้า ราคา มากกว่า 50 เเละสินค้าที่ p_status เป็น true
 
 <hr/>
 #### code
