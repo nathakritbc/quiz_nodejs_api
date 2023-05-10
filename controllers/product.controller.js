@@ -21,12 +21,13 @@ exports.create = async (req, res) => {
   try {
     const schema = Joi.object({
       p_name: Joi.string().required().min(2),
-      p_price: Joi.number().required().precision(2),
+      p_price: Joi.number().required(),
       p_amount: Joi.number().required(),
       p_image: Joi.string().required(),
       p_status: Joi.string(),
       productTypeId: Joi.string().guid().required(),
       shopId: Joi.string().guid().required(),
+      p_date_of_manufacture: Joi.date().format("YYYY-MM-DD"),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -78,6 +79,68 @@ exports.findAll = async (req, res) => {
       limit: query._limit,
     });
     res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+
+exports.findAllFormatCustom = async (req, res) => {
+  try {
+    let { query } = req;
+
+    let queryParams = {
+      ...query,
+    };
+
+    if (queryParams._page) {
+      delete queryParams._page;
+    }
+
+    if (queryParams._limit) {
+      delete queryParams._limit;
+    }
+
+    const result = await Product.findAll({
+      order: [["createdAt", "DESC"]],
+      where: queryParams,
+      include: [{ model: Shop }],
+      offset: query._page,
+      limit: query._limit,
+    });
+
+    const newFormatResult = result.map((value) => {
+      const p_price = Number(value.dataValues.p_price.toFixed(2));
+      const d = new Date(value.dataValues.p_date_of_manufacture);
+
+      const p_date_of_manufacture_en = `${d
+        .getDate()
+        .toString()
+        .padStart(2, "0")}/${Number(d.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${d.getFullYear()}`;
+
+      const p_date_of_manufacture_th = `${d
+        .getDate()
+        .toString()
+        .padStart(2, "0")}/${Number(d.getMonth() + 1)
+        .toString()
+        .padStart(2, "0")}/${d.getFullYear() + 543}`;
+
+      return {
+        ...value.dataValues,
+        p_price,
+        p_date_of_manufacture_en,
+        p_date_of_manufacture_th,
+      };
+    });
+
+    res.status(200).json({
+      oldFormatResult: result,
+      newFormatResult,
+    });
   } catch (error) {
     console.error(error);
     res.status(404).json({
@@ -139,11 +202,12 @@ exports.update = async (req, res) => {
 
     const schema = Joi.object({
       p_name: Joi.string().min(2),
-      p_price: Joi.number().precision(2),
+      p_price: Joi.number(),
       p_amount: Joi.number(),
       p_image: Joi.string(),
       p_status: Joi.string(),
       productTypeId: Joi.string().guid(),
+      p_date_of_manufacture: Joi.date().format("YYYY-MM-DD"),
       shopId: Joi.string().guid(),
     });
 

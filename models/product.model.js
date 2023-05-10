@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: true,
       defaultValue: true,
     },
+    p_date_of_manufacture: {
+      type: Sequelize.DATEONLY,
+    },
     createdAt: {
       type: Sequelize.DATE,
     },

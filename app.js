@@ -11,6 +11,7 @@ const loginLogingRouter = require("./routes/loginLoging.routes");
 const productTypeRouter = require("./routes/productType.routes");
 const shopRouter = require("./routes/shop.routes");
 const productsRouter = require("./routes/product.routes");
+const calculateQuotationRoute = require("./routes/calculate.quotation.routes");
 const usersRouter = require("./routes/users.routes");
 const uploadRouter = require("./routes/upload.routes");
 
@@ -80,6 +81,12 @@ app.use(
   "/api/shops",
   passport.authenticate("jwt", { session: false }),
   shopRouter
+);
+
+app.use(
+  "/api/calculateQuotation",
+  passport.authenticate("jwt", { session: false }),
+  calculateQuotationRoute
 );
 
 app.use(

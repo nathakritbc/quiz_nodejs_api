@@ -5,6 +5,8 @@ const products = require("../controllers/product.controller");
 
 router.post("/", products.create);
 
+router.get("/findAllFormatCustoms", products.findAllFormatCustom);
+
 router.get("/", products.findAll);
 
 router.get("/:id", products.findOne);
