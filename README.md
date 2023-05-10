@@ -30,6 +30,8 @@
   <img src='/images-doc/register-auth.png'  />
 
 - api สามารถ Login ได้
+  <hr/>
+
   <br/>
 
   #### api apth : POST http://localhost:8090/api/auth/register
@@ -47,6 +49,7 @@
     <img src='/images-doc/login-auth.png'  />
 
   \*\* เมื่อ login success จะสามารถนำ token ไปใช้งานเพื่อ authentication bearer token ใช้กับ api ส่วนอื่นๆ ได้เป็นเวลา 1 วัน token จะหมดอายุ
+  <hr/>
 
 - api สามารถ อับรูปภาพได้
   <br/>
@@ -97,27 +100,67 @@ force attack หรือเดารหัสผ่านใน login form
 - วิธีที่ 3 ใช้ Node Module ORM (Object-Relational mapping) ในการจัดการกับฐานข้อมูล ซึ่งในโปรเจ็กนี้ใช้ sequelize ในการจัดการกับ Database โดย sequelize ระบบความปลอดภัยการป้องกันฐานข้อมูล ป้องงกันการทำ sql injection เพื่อเดารหัสผ่านได้พอสมควร เเละช่วยป้องกันการโดน brute
   force attack
 
+  \*\* Sequelize Doc https://sequelize.org/
+
   <hr/>
 
 2. จงเขียนตัวอย่าง sql query ในโค้ด php โดยให้มีชุดคำสั่ง
-   ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
-   ได้เลย)
+ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
+ได้เลย)
+<hr/>
+
 3. จงเขียน saI query ที่มี sub query ในตำแหน่งต่างๆ อย่าง
-   น้อยสองแบบ (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเองได้เลย)
-4. จากตาราง tb_product(id,name,status,shop_id) และ
-   tb_shop(id,name)
-   จงเขียน โค้ด select เพื่อแสดงสินค้าของร้าน ที่มีชื่อร้าน "rudy
-   shop"
+น้อยสองแบบ (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเองได้เลย)
+<hr/>
+
+4. จากตาราง products(id,p_name,p_status,shop_id) และ
+shops(id,name)
+จงเขียน โค้ด select เพื่อแสดงสินค้าของร้าน ที่มีชื่อร้าน "rudy
+shop"
+<hr/>
+
+```CURL
+curl --location 'http://localhost:8090/api/products/findByShopName/rudy shop' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkyYzg1NDcyLTVlYjQtNGRiOS04ZmUzLTQzNmY3OWFkMjViOSIsInVfZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVfcm9sZSI6IlVTRVIiLCJpYXQiOjE2ODM2NDY4MjQsImV4cCI6MTY4MzczMzIyNH0.EE3-CCXiE7W7SueEki8XL9EMeXIkGVFt9xcrsOhuwjY' \
+--header 'Cookie: connect.sid=s%3ALMKFmVzl-Wn7XG2O8Nyaa0p02hamE-Vw.d4Hr9sEvaMOyUPtKN23nwLWRyywKNODP8Etm8gwS2%2B0'
+```
+
+<hr/>
+<img src='/images-doc/findByShopName-get.png'/>
+<hr/>
+<img src='/images-doc/findByShopName-code.png'/>
+
+<hr/>
+
 5. เขียนคำสั่ง update สินค้าทุกตัวของร้าน "rudy shop" ให้
-   มี status='0'
+มี status='0'
+<hr/>
+<img src='/images-doc/updateProductByShopNameAndStatus-rudy-shop-db-old.png' />
+<hr/>
+<img src='/images-doc/updateProductByShopNameAndStatus-rudy-shop-code.png'/>
+<hr/>
+
+```CURL
+curl --location 'http://localhost:8090/api/products/findByShopName/rudy shop' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkyYzg1NDcyLTVlYjQtNGRiOS04ZmUzLTQzNmY3OWFkMjViOSIsInVfZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVfcm9sZSI6IlVTRVIiLCJpYXQiOjE2ODM2NDY4MjQsImV4cCI6MTY4MzczMzIyNH0.EE3-CCXiE7W7SueEki8XL9EMeXIkGVFt9xcrsOhuwjY' \
+--header 'Cookie: connect.sid=s%3ALMKFmVzl-Wn7XG2O8Nyaa0p02hamE-Vw.d4Hr9sEvaMOyUPtKN23nwLWRyywKNODP8Etm8gwS2%2B0'
+```
+
+<hr/>
+<img src='/images-doc/updateProductByShopNameAndStatus-rudy-shop-update.png'/>
+<hr/>
+<img src='/images-doc/updateProductByShopNameAndStatus-rudy-shop-db-new.png' />
+<hr/>
+
 6. จงเขียน function ของ code sql เพื่อปรับรูปแบบการ select ข้อมูล ตามประเภทข้อมูลดังนี้เพื่อให้ได้ผลลัพธืดังตัวอย่าง
-   type date ให้แสดงผลเป็น dd/mm/YYYY
-   type float,double ให้แสดงผลเป็น x,xxx,xxx.xx
-   (สามารถเขียนได้มากกว่า 2 ข้อที่ยกตัวอย่าง)
+type date ให้แสดงผลเป็น dd/mm/YYYY
+type float,double ให้แสดงผลเป็น x,xxx,xxx.xx
+(สามารถเขียนได้มากกว่า 2 ข้อที่ยกตัวอย่าง)
+<hr/>
+
 7. จงเขียน code function php ในการคำนวณผลลัพธ์ใบเสนอราคาโดยหัวข้อมีดังนี้
    ราคาสินค้ารวม = สามารถตั้งเองได้
    ส่วนลดรวม = สามารถตั้งเองได้
    ราคาสินค้าหลังส่วนลด
    ภาษีมูลค่าเพิ่ม 7 %
    ราคารวมสุทธิ
-   (ถ้าใช้ framework zend laravel node.js จะพิจารณาเป็นพิเศษ)
