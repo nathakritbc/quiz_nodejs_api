@@ -46,6 +46,8 @@
 
     <img src='/images-doc/login-auth.png'  />
 
+  \*\* เมื่อ login success จะสามารถนำ token ไปใช้งานเพื่อ authentication bearer token ใช้กับ api ส่วนอื่นๆ ได้เป็นเวลา 1 วัน token จะหมดอายุ
+
 - api สามารถ อับรูปภาพได้
 - ใช้ Nodejs Express access token api
 
