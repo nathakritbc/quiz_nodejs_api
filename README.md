@@ -8,8 +8,8 @@
 
 ### สร้าง Project ที่ใช้ Nodejs Express
 
-<br/>
 - api สามารถ สมัครสมาชิกได้
+  <br/>
   <img src='/images-doc/register-auth.png'  />
 - api สามารถ Login ได้
 - api สามารถ อับรูปภาพได้
