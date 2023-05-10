@@ -88,7 +88,14 @@ force attack หรือเดารหัสผ่านใน login form
 <img src='/images-doc/pass-incorrect2.png'/>
 <img src='/images-doc/pass-incorrect3.png'/>
 <hr/>
-<img src='/images-doc/login-logging.png'
+
+#### login logging
+
+<img src='/images-doc/login-logging.png'/>
+<hr/>
+
+- วิธีที่ 3 ใช้ Node Module ORM (Object-Relational mapping) ในการจัดการกับฐานข้อมูล ซึ่งในโปรเจ็กนี้ใช้ sequelize ในการจัดการกับ Database โดย sequelize ระบบความปลอดภัยการป้องกันฐานข้อมูล ป้องงกันการทำ sql injection เพื่อเดารหัสผ่านได้พอสมควร เเละช่วยป้องกันการโดน brute
+  force attack
 
 2. จงเขียนตัวอย่าง sql query ในโค้ด php โดยให้มีชุดคำสั่ง
    ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
