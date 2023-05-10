@@ -8,6 +8,18 @@
 
 - https://documenter.getpostman.com/view/21024510/2s93eZyBeG
 
+# ENV
+
+```env
+HOST=127.0.0.1
+USER=postgres
+PASSWORD=12345678
+DB=quiz_nodejs_api
+DIALECT=postgres
+PORT=8090
+SECRETORKEY=sd-aaaalfkhsldfjnsdkf,gj.Dkjgdz/-=lffhj&x.glkjgb,kdfjlskd,k
+```
+
 ## ส่วนที่ 1
 
 ### สร้าง Project ที่ใช้ Nodejs Express
