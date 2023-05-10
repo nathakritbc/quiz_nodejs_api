@@ -27,7 +27,7 @@ exports.create = async (req, res) => {
       p_status: Joi.string(),
       productTypeId: Joi.string().guid().required(),
       shopId: Joi.string().guid().required(),
-      p_date_of_manufacture: Joi.date().format("YYYY-MM-DD"),
+      p_date_of_manufacture: Joi.date(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -252,7 +252,7 @@ exports.update = async (req, res) => {
       p_image: Joi.string(),
       p_status: Joi.string(),
       productTypeId: Joi.string().guid(),
-      p_date_of_manufacture: Joi.date().format("YYYY-MM-DD"),
+      p_date_of_manufacture: Joi.date(),
       shopId: Joi.string().guid(),
     });
 

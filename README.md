@@ -113,6 +113,86 @@ force attack หรือเดารหัสผ่านใน login form
 น้อยสองแบบ (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเองได้เลย)
 <hr/>
 
+\*\* code query เลือก field เเล้วสร้าง sub query select สินค้า ราคา มากกว่า 50 เเละสินค้าที่ p_status เป็น true
+
+<hr/>
+#### code
+
+```javascript
+exports.findByAttributesAndSubQuery = async (req, res) => {
+  try {
+    let { query } = req;
+
+    let queryParams = {
+      ...query,
+    };
+
+    if (queryParams._page) {
+      delete queryParams._page;
+    }
+
+    if (queryParams._limit) {
+      delete queryParams._limit;
+    }
+
+    const attributes = ["id", "p_name", "p_price", "p_status"];
+    const where = {
+      [Op.and]: [
+        {
+          p_price: {
+            [Op.gt]: 50,
+          },
+        },
+        { p_status: true },
+      ],
+    };
+
+    const result = await Product.findAll({
+      order: [["createdAt", "DESC"]],
+      where,
+      attributes,
+      // include: [{ model: Shop }],
+      offset: query._page,
+      limit: query._limit,
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+```
+
+<hr/>
+<img src='/images-doc/findByAttributesAndSubQueries.png' />
+<hr/>
+
+#### ผลลัพธ์
+
+<hr/>
+<img src='/images-doc/findByAttributesAndSubQueries-res.png' />
+<hr/>
+
+```javascript
+[
+  {
+    id: "acc37fbf-35e5-499a-9e28-659f08c7eef0",
+    p_name: "p3",
+    p_price: 65.65,
+    p_status: true,
+  },
+  {
+    id: "e8b7fb3f-1aa1-431f-90c1-4cc8826fa34b",
+    p_name: "p2",
+    p_price: 99.888,
+    p_status: true,
+  },
+];
+```
+
+<hr/>
 4. จากตาราง products(id,p_name,p_status,shop_id) และ
 shops(id,name)
 จงเขียน โค้ด select เพื่อแสดงสินค้าของร้าน ที่มีชื่อร้าน "rudy
