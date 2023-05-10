@@ -74,7 +74,13 @@ curl --location 'http://localhost:8090/api/products' \
 ## ส่วนที่ 2
 
 1. ให้อธิบายว่าจะใช้วิธีการอะไรได้บ้างในการป้องกัน brute
-   force attack หรือเดารหัสผ่านใน login form
+force attack หรือเดารหัสผ่านใน login form
+<hr/>
+   วิธีที่ 1 ใช้ library node modules Joi ในการ Validate body request ที่ถูกส่งมา เพื่อกรอง Body ที่ถูกส่งมา ไม่ให้ส่งค่าต้องห้าม หรือ code ที่อาจจะเป็นอันตรายต่อระบบ ป้องกันการถูก brute
+   force attack ได้อีกระดับ
+   - Doc Joi https://joi.dev/
+<img src='./images-doc/joi--loginvalidate.png' />
+
 2. จงเขียนตัวอย่าง sql query ในโค้ด php โดยให้มีชุดคำสั่ง
    ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
    ได้เลย)
