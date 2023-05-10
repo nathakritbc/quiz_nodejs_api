@@ -15,7 +15,7 @@
 
   #### Json Body
 
-  `JSON`
+  ```JSON
   {
   "u_email": "user3@gmail.com",
   "u_password": "user3@123",
@@ -28,7 +28,6 @@
   ```
 
   <img src='/images-doc/register-auth.png'  />
-  ```
 
 - api สามารถ Login ได้
 - api สามารถ อับรูปภาพได้
