@@ -10,7 +10,26 @@
 
 - api สามารถ สมัครสมาชิกได้
   <br/>
+
+  #### api apth : http://localhost:8090/api/auth/register
+
+  #### Json Body
+
+  `JSON`
+  {
+  "u_email": "user3@gmail.com",
+  "u_password": "user3@123",
+  "u_full_name": "user3 u_full_name",
+  "u_tel": "0631033207",
+  "u_address": "u_address3 u_address3",
+  "u_role": "USER"
+  }
+
+  ```
+
   <img src='/images-doc/register-auth.png'  />
+  ```
+
 - api สามารถ Login ได้
 - api สามารถ อับรูปภาพได้
 - ใช้ Nodejs Express access token api
