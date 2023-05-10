@@ -125,6 +125,28 @@ force attack หรือเดารหัสผ่านใน login form
 
   <hr/>
 
+- วิธีที่ 4 การตั้ง id เป็น type uuid เผื่อป้องกะนการเดา id ของ table เวลา query data ผ่าน params หรือ เพิ่ม ลบ data ผ่าน params
+
+  <hr/>
+
+  <img src='/images-doc/a1.png' />
+
+  <hr/>
+
+```javascript
+module.exports = (sequelize, Sequelize) => {
+  const Product = sequelize.define("products", {
+    id: {
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4,
+      primaryKey: true,
+      // autoIncrement: true,
+      allowNull: false,
+    },
+```
+
+  <hr/>
+
 2. จงเขียนตัวอย่าง sql query ชุดคำสั่ง
 ที่ช่วยป้องกัน sql injection (ตั้งชื่อตารางชื่อฟิลด์ด้วยตัวเอง
 ได้เลย)
