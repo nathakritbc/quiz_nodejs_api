@@ -21,10 +21,12 @@ exports.create = async (req, res) => {
   try {
     const schema = Joi.object({
       p_name: Joi.string().required().min(2),
-      p_price: Joi.number().required(),
+      p_price: Joi.number().required().precision(2),
       p_amount: Joi.number().required(),
       p_image: Joi.string().required(),
       p_status: Joi.string(),
+      productTypeId: Joi.string().guid().required(),
+      shopId: Joi.string().guid().required(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -54,13 +56,48 @@ exports.create = async (req, res) => {
 // Retrieve all Products from the database.
 exports.findAll = async (req, res) => {
   try {
-    const { query } = req;
+    let { query } = req;
+
+    let queryParams = {
+      ...query,
+    };
+
+    if (queryParams._page) {
+      delete queryParams._page;
+    }
+
+    if (queryParams._limit) {
+      delete queryParams._limit;
+    }
+
     const result = await Product.findAll({
       order: [["createdAt", "DESC"]],
-      where: query,
+      where: queryParams,
       include: [{ model: Shop }],
+      offset: query._page,
+      limit: query._limit,
     });
     res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+
+exports.findByShopName = async (req, res) => {
+  try {
+    const { shop_name } = req.params;
+    const result = await Product.findAll({
+      where: {},
+      include: [{ model: Shop, where: { name: shop_name } }],
+    });
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(200).json({});
+    }
   } catch (error) {
     console.error(error);
     res.status(404).json({
@@ -102,10 +139,12 @@ exports.update = async (req, res) => {
 
     const schema = Joi.object({
       p_name: Joi.string().min(2),
-      p_price: Joi.number(),
+      p_price: Joi.number().precision(2),
       p_amount: Joi.number(),
       p_image: Joi.string(),
       p_status: Joi.string(),
+      productTypeId: Joi.string().guid(),
+      shopId: Joi.string().guid(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -133,6 +172,30 @@ exports.update = async (req, res) => {
     res.status(200).json({
       message: constants.kResultOk,
       result: newResult.dataValues,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ message: constants.kResultNok });
+  }
+};
+
+exports.updateProductByShopNameAndStatus = async (req, res) => {
+  try {
+    const { shop_name } = req.params;
+
+    const resShop = await Shop.findOne({
+      where: { name: shop_name },
+    });
+
+    await Product.update(
+      { p_status: false },
+      {
+        where: { shopId: resShop.dataValues.id },
+      }
+    );
+
+    res.status(200).json({
+      message: constants.kResultOk,
     });
   } catch (error) {
     console.error(error);

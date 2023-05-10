@@ -39,11 +39,26 @@ exports.create = async (req, res) => {
 // Retrieve all Shops from the database.
 exports.findAll = async (req, res) => {
   try {
-    const { query } = req;
+    let { query } = req;
+
+    let queryParams = {
+      ...query,
+    };
+
+    if (queryParams._page) {
+      delete queryParams._page;
+    }
+
+    if (queryParams._limit) {
+      delete queryParams._limit;
+    }
+
     const result = await Shop.findAll({
       order: [["createdAt", "DESC"]],
-      where: query,
+      where: queryParams,
       include: [{ model: Product }],
+      offset: query._page,
+      limit: query._limit,
     });
     res.status(200).json(result);
   } catch (error) {
