@@ -64,6 +64,13 @@
 <img src='/images-doc/token-login.png'  />
 <img src='/images-doc/token-auth.png'  />
 
+- หรือว่า ใช้ CURL
+
+```CURL
+curl --location 'http://localhost:8090/api/products' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkyYzg1NDcyLTVlYjQtNGRiOS04ZmUzLTQzNmY3OWFkMjViOSIsInVfZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVfcm9sZSI6IlVTRVIiLCJpYXQiOjE2ODM3MDg4NzUsImV4cCI6MTY4Mzc5NTI3NX0.Io0nNAYu8fwUF7HIcwlQv_CIudubBcHz6uvqu-r6hIQ'
+```
+
 ## ส่วนที่ 2
 
 1. ให้อธิบายว่าจะใช้วิธีการอะไรได้บ้างในการป้องกัน brute
