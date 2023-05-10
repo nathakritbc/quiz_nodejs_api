@@ -1,4 +1,4 @@
-# ข้อสอบ Backend (09/10/65)
+# ข้อสอบ Backend (09/10/65) พัฒนาด้วย (Nodejs Express)
 
 ## Postman Doc Collection Link
 
@@ -8,8 +8,9 @@
 
 ### สร้าง Project ที่ใช้ Nodejs Express
 
-- api สามารถ Login ได้
 - api สามารถ สมัครสมาชิกได้
+  <img src='/images-doc/register-auth.png'  />
+- api สามารถ Login ได้
 - api สามารถ อับรูปภาพได้
 - ใช้ Nodejs Express access token api
 
