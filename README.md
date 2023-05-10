@@ -11,7 +11,7 @@
 - api สามารถ สมัครสมาชิกได้
   <br/>
 
-  #### api apth : http://localhost:8090/api/auth/register
+  #### api apth : POST http://localhost:8090/api/auth/register
 
   #### Json Body
 
@@ -32,7 +32,7 @@
 - api สามารถ Login ได้
   <br/>
 
-  #### api apth : http://localhost:8090/api/auth/register
+  #### api apth : POST http://localhost:8090/api/auth/register
 
   #### Json Body
 
@@ -49,7 +49,20 @@
   \*\* เมื่อ login success จะสามารถนำ token ไปใช้งานเพื่อ authentication bearer token ใช้กับ api ส่วนอื่นๆ ได้เป็นเวลา 1 วัน token จะหมดอายุ
 
 - api สามารถ อับรูปภาพได้
+  <br/>
+
+  #### api apth : POST form-data http://localhost:8090/api/uploads/image
+
+     <img src='/images-doc/upload-image.png'  />
+
+  \*\* upload image ผ่าน form ของ user โดยใช้ key image เพื่อใช้ในการ upload image เมื่อ upload sucess จะได้ ชื่อใหม่ของ รูปภาพ เพื่อนำไปบันทึกหรือใช้งานอื่นๆต่อไป โดยชื่อจะไม่ซ้ำกับชื่อรูปภาพอื่นๆ โดย response json key 'newImageName'
+
 - ใช้ Nodejs Express access token api
+
+\*\* ทดสอบใช้ Token ที่ login มา เพื่อใช้ในการ GET ข้อมูล Products ผ่าน GET PATH : http://localhost:8090/api/products
+
+<img src='/images-doc/token-login.png'  />
+<img src='/images-doc/token-auth.png'  />
 
 ## ส่วนที่ 2
 
