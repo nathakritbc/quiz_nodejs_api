@@ -502,3 +502,125 @@ exports.findAllFormatCustom = async (req, res) => {
    ราคาสินค้าหลังส่วนลด
    ภาษีมูลค่าเพิ่ม 7 %
    ราคารวมสุทธิ
+
+#### Code
+
+```javascript
+const constants = require("../constants");
+
+exports.calculateQuotation = async (req, res) => {
+  try {
+    const products = [
+      { p_name: "ปลากระป๋อง", p_price: 25, p_amount: 5, discount: 5 },
+      { p_name: "มาม่า", p_price: 6, p_amount: 500, discount: 25 },
+      { p_name: "ยางลบ", p_price: 2, p_amount: 1570, discount: 3 },
+      { p_name: "ไข่ไก่", p_price: 3, p_amount: 2590, discount: 2 },
+      { p_name: "น้ำเปล่า", p_price: 7, p_amount: 5578, discount: 31 },
+    ];
+
+    let total_price = 0;
+    let total_discount = 0;
+    const productSum = products.map((value) => {
+      const p_sum = value.p_price * value.p_amount;
+      const sum_discount = p_sum * (value.discount / 100);
+      total_price = total_price + p_sum;
+      total_discount = total_discount + sum_discount;
+
+      return {
+        ...value,
+        sum_discount,
+        p_sum,
+      };
+    });
+    const vat = 0.07;
+    const tato_price_after_discount = total_price - total_discount;
+    const tato_vat = tato_price_after_discount * vat;
+    const total_net_price = tato_price_after_discount - tato_vat;
+    const result = {
+      productAll: productSum,
+      total_price,
+      total_discount,
+      vat: 0.07,
+      tato_price_after_discount,
+      tato_vat,
+      total_net_price,
+    };
+
+    res.status(200).send({
+      message: constants.kResultOk,
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({
+      message: constants.kResultNok,
+    });
+  }
+};
+```
+
+#### Test API
+
+```CURL
+curl --location 'http://localhost:8090/api/calculateQuotation' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkyYzg1NDcyLTVlYjQtNGRiOS04ZmUzLTQzNmY3OWFkMjViOSIsInVfZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsInVfcm9sZSI6IlVTRVIiLCJpYXQiOjE2ODM2NDUwNjMsImV4cCI6MTY4MzczMTQ2M30.00sGai5bqmmvjGpn5Y4-K9eZ1A1WyEDET4ZxT4srEBw' \
+--header 'Cookie: connect.sid=s%3AxI8Z5sGLaIlqP3lPd67dnDsO4PqgBU80.FSQLSLYJa%2FDujEvVhUE%2F4tJput7P4zCTz0dSjIcIwsw'
+```
+
+#### ผลลัพธ์
+
+```JSON
+{
+    "message": "ok",
+    "result": {
+        "productAll": [
+            {
+                "p_name": "ปลากระป๋อง",
+                "p_price": 25,
+                "p_amount": 5,
+                "discount": 5,
+                "sum_discount": 6.25,
+                "p_sum": 125
+            },
+            {
+                "p_name": "มาม่า",
+                "p_price": 6,
+                "p_amount": 500,
+                "discount": 25,
+                "sum_discount": 750,
+                "p_sum": 3000
+            },
+            {
+                "p_name": "ยางลบ",
+                "p_price": 2,
+                "p_amount": 1570,
+                "discount": 3,
+                "sum_discount": 94.2,
+                "p_sum": 3140
+            },
+            {
+                "p_name": "ไข่ไก่",
+                "p_price": 3,
+                "p_amount": 2590,
+                "discount": 2,
+                "sum_discount": 155.4,
+                "p_sum": 7770
+            },
+            {
+                "p_name": "น้ำเปล่า",
+                "p_price": 7,
+                "p_amount": 5578,
+                "discount": 31,
+                "sum_discount": 12104.26,
+                "p_sum": 39046
+            }
+        ],
+        "total_price": 53081,
+        "total_discount": 13110.11,
+        "vat": 0.07,
+        "tato_price_after_discount": 39970.89,
+        "tato_vat": 2797.9623,
+        "total_net_price": 37172.9277
+    }
+}
+```
