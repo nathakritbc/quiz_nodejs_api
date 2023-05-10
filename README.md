@@ -20,6 +20,11 @@ PORT=8090
 SECRETORKEY=sd-aaaalfkhsldfjnsdkf,gj.Dkjgdz/-=lffhj&x.glkjgb,kdfjlskd,k
 ```
 
+## npm script
+
+1. npm install
+2. npm run dev
+
 ## ส่วนที่ 1
 
 ### สร้าง Project ที่ใช้ Nodejs Express
