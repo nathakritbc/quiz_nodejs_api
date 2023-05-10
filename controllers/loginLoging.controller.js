@@ -11,6 +11,7 @@ exports.create = async (req, res) => {
       status: Joi.boolean(),
       time: Joi.required(),
       date: Joi.required(),
+      userId: Joi.string().guid().required(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -33,7 +34,7 @@ exports.create = async (req, res) => {
     res.status(201).send({ message: constants.kResultOk, result });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: constants.kResultNok });
+    res.status(400).send({ message: constants.kResultNok });
   }
 };
 
@@ -79,7 +80,7 @@ exports.update = async (req, res) => {
     const result = await LoginLoging.findByPk(id);
 
     if (!result) {
-      res.status(500).json({
+      res.status(400).send({
         message: constants.kResultNok,
       });
       return;
@@ -88,6 +89,7 @@ exports.update = async (req, res) => {
     const schema = Joi.object({
       description: Joi.string(),
       status: Joi.boolean(),
+      userId: Joi.string().guid(),
     });
 
     const { error, value } = schema.validate(req.body);
@@ -118,7 +120,7 @@ exports.update = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: constants.kResultNok });
+    res.status(400).send({ message: constants.kResultNok });
   }
 };
 
@@ -130,7 +132,7 @@ exports.delete = async (req, res) => {
 
     if (!result) {
       console.error("Internal error");
-      res.status(500).json({ message: constants.kResultNok });
+      res.status(400).send({ message: constants.kResultNok });
       return;
     }
 
@@ -142,7 +144,7 @@ exports.delete = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    res.status(400).send({
       message: constants.kResultNok,
     });
   }

@@ -7,7 +7,6 @@ module.exports = (sequelize, Sequelize) => {
       // autoIncrement: true,
       allowNull: false,
     },
-
     description: {
       type: Sequelize.TEXT(),
     },

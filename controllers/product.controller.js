@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
     res.status(201).send({ message: constants.kResultOk, result });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: constants.kResultNok });
+    res.status(400).send({ message: constants.kResultNok });
   }
 };
 
@@ -94,7 +94,7 @@ exports.update = async (req, res) => {
     const result = await Product.findByPk(id);
 
     if (!result) {
-      res.status(500).json({
+      res.status(400).send({
         message: constants.kResultNok,
       });
       return;
@@ -136,7 +136,7 @@ exports.update = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: constants.kResultNok });
+    res.status(400).send({ message: constants.kResultNok });
   }
 };
 
@@ -149,7 +149,7 @@ exports.delete = async (req, res) => {
     const imagePath = `./uploads/images/${result.p_image}`;
     if (!result) {
       console.error("Internal error");
-      res.status(500).json({ message: constants.kResultNok });
+      res.status(400).send({ message: constants.kResultNok });
       return;
     }
 
@@ -164,7 +164,7 @@ exports.delete = async (req, res) => {
     // }
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    res.status(400).send({
       message: constants.kResultNok,
     });
   }
