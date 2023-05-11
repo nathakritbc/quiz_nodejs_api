@@ -67,9 +67,10 @@ SECRETORKEY=sd-aaaalfkhsldfjnsdkf,gj.Dkjgdz/-=lffhj&x.glkjgb,kdfjlskd,k
 
   ```
 
-    <img src='/images-doc/login-auth.png'  />
+<img src='/images-doc/login-auth.png'  />
 
-  \*\* เมื่อ login success จะสามารถนำ token ไปใช้งานเพื่อ authentication bearer token ใช้กับ api ส่วนอื่นๆ ได้เป็นเวลา 1 วัน token จะหมดอายุ
+\*\* เมื่อ login success จะสามารถนำ token ไปใช้งานเพื่อ authentication bearer token ใช้กับ api ส่วนอื่นๆ ได้เป็นเวลา 1 วัน token จะหมดอายุ
+
   <hr/>
 
 - api สามารถ อับรูปภาพได้
@@ -130,6 +131,14 @@ force attack หรือเดารหัสผ่านใน login form
   <hr/>
 
   <img src='/images-doc/a1.png' />
+
+  <hr/>
+
+- วิธีที่ 5 คือการ hash รหัสผ่านก่อนบันทึกลง ฐานข้อมูล
+
+  <hr/>
+
+  <img src='/images-doc/hashing-password.png' />
 
   <hr/>
 
